@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from typing import Union, List
+from typing import Union
 
 
 def c(size):
