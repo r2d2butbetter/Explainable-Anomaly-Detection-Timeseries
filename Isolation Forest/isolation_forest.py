@@ -33,13 +33,6 @@ class IsolationTree:
         self.height_limit = height_limit
 
     def fit(self, X: np.ndarray, improved=False):
-        """
-        Given a 2D matrix of observations, create an isolation tree. Set field
-        self.root to the root of that tree and return it.
-
-        If you are working on an improved algorithm, check parameter "improved"
-        and switch to your new functionality else fall back on your original code.
-        """
         if improved:
             self.improved_fit(X)
         else:
