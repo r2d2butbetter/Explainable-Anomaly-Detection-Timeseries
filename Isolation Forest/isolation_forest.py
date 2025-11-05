@@ -51,19 +51,7 @@ class IsolationTree:
         left.fit(X_left)
         right.fit(X_right)
         self.root = DecisionNode(left.root, right.root, splitAtt, splitVal)
-        self.n_nodes = self.count_nodes(self.root)
         return self.root
-
-    def count_nodes(self, root):
-        count = 0
-        stack = [root]
-        while stack:
-            node = stack.pop()
-            count += 1
-            if isinstance(node, DecisionNode):
-                stack.append(node.right)
-                stack.append(node.left)
-        return count
 
 
 class IsolationTreeEnsemble:
@@ -124,23 +112,3 @@ class IsolationTreeEnsemble:
 
     def predict_from_anomaly_scores(self, scores:np.ndarray, threshold:float) -> np.ndarray:
         return np.array([1 if s >= threshold else 0 for s in scores])
-
-#functions fro shap compatible
-    def predict(self, X:np.ndarray, threshold:float) -> np.ndarray:
-        scores = self.anomaly_score(X)
-        prediction = self.predict_from_anomaly_scores(scores, threshold)
-        return prediction
-    
-    def decision_function(self, X: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
-        return self.anomaly_score(X)
-    
-    def score_samples(self, X: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
-        return -self.anomaly_score(X)
-    
-    def get_feature_names(self) -> List[str]:
-        if self.feature_names is None:
-            raise ValueError("Model has not been fitted yet.")
-        return self.feature_names
-    
-    def __call__(self, X: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
-        return self.anomaly_score(X)
